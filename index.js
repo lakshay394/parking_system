@@ -22,14 +22,14 @@ const db = new pg.Client({
     port: process.env.PGPORT,
 });
 db.connect();
-/*app.use(
+app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
     })
-);*/
-app.use(session({
+);
+/*app.use(session({
 cookie:{
     secure: true,
     maxAge:60000
@@ -37,7 +37,7 @@ cookie:{
 secret: 'secret',
 saveUninitialized: true,
 resave: false
-}));
+}));*/
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
