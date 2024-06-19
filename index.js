@@ -6,11 +6,13 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 //import session from "express-session";
 import session from "cookie-session";
-//import env from "dotenv";
+import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
 
 const app = express();
 const port = process.env.PORT || 4000;
+const saltRounds = 10;
+env.config();
 
 const db = new pg.Client({
     user: process.env.PGUSER,
