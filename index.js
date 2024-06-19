@@ -6,11 +6,11 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 const db = new pg.Client({
-    user: process.env.PGUSER,
-    host: process.env.PGHOST,
-    database: process.env.PGDB,
-    password: process.env.PGPASSWORD,
-    port: process.env.PGPORT,
+    user: "postgres_parking",
+    host: "dpg-cpp860uehbks73bt5690-a",
+    database: "parking_db_im9z",
+    password: "CwALXeVyyuViXK0RXTFhaTfkvmybIxzB",
+    port: 5432,
 });
 db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
