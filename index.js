@@ -8,6 +8,7 @@ import session from "express-session";
 //import session from "cookie-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
+import { createClient } from 'redis';
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -23,14 +24,14 @@ const db = new pg.Client({
 });
 db.connect();
 
-let redisClient = createClient()
-redisClient.connect().catch(console.error)
+let redisClient = await createClient();
+redisClient.connect().catch(console.error);
 
 // Initialize store.
 let redisStore = new RedisStore({
   client: redisClient,
   prefix: "myapp:",
-})
+});
 
 app.use(
     session({
