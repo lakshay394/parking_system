@@ -4,8 +4,8 @@ import pg from "pg";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
-//import session from "express-session";
-import session from "cookie-session";
+import session from "express-session";
+//import session from "cookie-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
 
