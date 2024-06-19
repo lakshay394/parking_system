@@ -1,12 +1,13 @@
-import express from "express";
-import bodyParser from "body-parser";
-import pg from "pg";
-import bcrypt from "bcrypt";
-import passport from "passport";
-import { Strategy } from "passport-local";
-import session from "express-session";
-import env from "dotenv";
-import GoogleStrategy from 'passport-google-oauth2';
+const express = require('express');
+const bodyParser = require('body-parser');
+const pg = require('pg');
+const bcrypt= require('bcrypt');
+const passport = require('passport');
+const session  = require('express-session');
+const env = require('dotenv');
+const GoogleStrategy = require('passport-google-oauth2);
+//import { Strategy } from "passport-local";
+const Strategy = require('passport-local').Strategy
 
 const app = express();
 const port = process.env.PORT || 4000;
