@@ -5,11 +5,9 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
-//import session from "cookie-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
-import { createClient } from 'redis';
-import RedisStore from "connect-redis";
+
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -25,16 +23,6 @@ const db = new pg.Client({
     port: process.env.PGPORT,
 });
 db.connect();
-
-/*let redisClient = await createClient(host: 'testRedis',
-port: 6379);
-redisClient.connect().catch(console.error);
-
-// Initialize store.
-let redisStore = new RedisStore({
-  client: redisClient,
-  prefix: "myapp:",
-});*/
 
 app.use(
     session({
