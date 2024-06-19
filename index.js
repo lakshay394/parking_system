@@ -22,8 +22,19 @@ const db = new pg.Client({
     port: process.env.PGPORT,
 });
 db.connect();
+
+let redisClient = createClient()
+redisClient.connect().catch(console.error)
+
+// Initialize store.
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "myapp:",
+})
+
 app.use(
     session({
+        store: redisStore,
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
