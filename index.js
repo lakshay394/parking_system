@@ -32,7 +32,6 @@ cookie:{
     secure: true,
     maxAge:60000
        },
-store: new RedisStore(),
 secret: 'secret',
 saveUninitialized: true,
 resave: false
