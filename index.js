@@ -4,7 +4,8 @@ import pg from "pg";
 import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
-import session from "express-session";
+//import session from "express-session";
+import session from "cookie-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
 
@@ -19,13 +20,24 @@ const db = new pg.Client({
     port: process.env.PGPORT,
 });
 db.connect();
-app.use(
+/*app.use(
     session({
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: true,
     })
-);
+);*/
+app.use(session({
+cookie:{
+    secure: true,
+    maxAge:60000
+       },
+store: new RedisStore(),
+secret: 'secret',
+saveUninitialized: true,
+resave: false
+}));
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(passport.initialize());
