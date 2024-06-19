@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Anta&display=swap');
+/* header styling */
+
+* {
+    margin: 0px;
+}
+
+body {
+    /* color: aliceblue; */
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background: radial-gradient(ellipse at bottom, #253242, #090a0f);
+}
+
+header {
+    padding-top: 1.5%;
+    padding-bottom: 1%;
+    height: 10%;
+}
+
+.logo {
+    margin-left: 4%;
+    display: flex;
+    position: absolute;
+}
+
+.logo_img {
+    width: 18%;
+}
+
+.list_item {
+    /* font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; */
+    font-family: "Bellota", system-ui;
+
+    font-size: 1.4rem;
+    margin-right: 4%;
+    list-style-type: none;
+    display: inline;
+    position: relative;
+    margin-left: 10px;
+}
+
+.nav_a {
+    color: rgb(248, 245, 245);
+    text-decoration: none;
+}
+
+.nav_a:hover {
+    text-shadow: rgb(255, 0, 0) 1px 1px ;
+    text-decoration-line: overline;
+}
+
+.nav_list {
+    text-align: right;
+    padding-right: 5%;
+}
+.footer{
+    align-items: center;
+    /* position: fixed;  */
+    bottom: 0;
+    height: 60px;
+    /* background-color: rgb(2, 38, 67); */
+    background: linear-gradient(180deg, #12051c 0%, #1b2d36 100%);
+
+    width: 100%;
+    text-align: center;
+    color: aliceblue;
+}
+.footer-text{
+    margin-left: 43%;
+    margin-bottom: 30px;
+    position:absolute;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.insta{
+    margin-top: 15px;
+    position: absolute;
+    margin-left: 45%;
+    height: 30px;
+    width: 30px;
+}
+.git{
+    margin-top: 15px;
+    position: absolute;
+    margin-left: 42%;
+    height: 30px;
+    width: 30px;
+}
+
+
+
+
+
+
+.contact-form{
+    margin: 10%;
+    /* display: block */
+
+}
+.feedback-input {
+    color: white;
+    font-weight: 500;
+    font-size: 18px;
+    border-radius: 5px;
+    line-height: 22px;
+    background-color: transparent;
+    border: 2px solid #3586ff;
+    transition: all 0.3s;
+    padding: 13px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: 0;
+  }
+.submit-contact{
+    margin-left: 42%;
+    width: 16%;
+    background: #3586ff;
+    border-radius: 5px;
+    border: 0;
+    cursor: pointer;
+    color: rgb(2, 38, 67);
+    font-family:fantasy;
+    font-size: 28px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: all 0.1s;
+    margin-top: -4px;
+    font-weight:lighter;
+}  
+
+  [type="submit"]:hover {
+    background-color: rgb(2, 38, 67);
+    color: #3586ff;
+  }
