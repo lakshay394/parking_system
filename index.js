@@ -9,6 +9,7 @@ import session from "express-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
 import { createClient } from 'redis';
+import RedisStore from "connect-redis";
 
 const app = express();
 const port = process.env.PORT || 4000;
