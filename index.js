@@ -14,6 +14,7 @@ import RedisStore from "connect-redis";
 const app = express();
 const port = process.env.PORT || 4000;
 const saltRounds = 10;
+const memoryStore = new session.MemoryStore();
 env.config();
 
 const db = new pg.Client({
@@ -25,21 +26,22 @@ const db = new pg.Client({
 });
 db.connect();
 
-let redisClient = await createClient();
+/*let redisClient = await createClient(host: 'testRedis',
+port: 6379);
 redisClient.connect().catch(console.error);
 
 // Initialize store.
 let redisStore = new RedisStore({
   client: redisClient,
   prefix: "myapp:",
-});
+});*/
 
 app.use(
     session({
-        store: redisStore,
         secret: process.env.SESSION_SECRET,
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
+        store: memoryStore,
     })
 );
 /*app.use(session({
