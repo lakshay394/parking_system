@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lakshay Parking</title>
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body>
+    <div class="bgAnimation" id="bgAnimation">
+        <div class="backgroundAmim">
+
+        </div>
+    </div>
+    <div class="container">
+        <nav>
+            <h1><span>Lakshay</span>Parking</h1>
+            <ul>
+                <li>Home</li>
+                <li>Services</li>
+                <li>Contact</li>
+            </ul>
+        </nav>
+        <section>
+            <div class="textBox">
+                <h1><span>Parking</span> System </h1>
+                <p>LogIn or SignUp for using parking syatem web application</p>
+                <a href="/login"><button class="homeBtn" style="--i:#fff;">Log In</button></a>
+                <a href="/register"><button class="homeBtn" style="--i:#00bfff;">Sign Up</button></a>
+            </div>
+        </section>
+    </div>
+    <script>
+        const bgAnimation = document.getElementById('bgAnimation');
+        const numberOfColorBoxes = 400;
+        for (let i = 0; i < numberOfColorBoxes; i++) {
+            const colorBox = document.createElement('div');
+            colorBox.classList.add('colorBox');
+            bgAnimation.append(colorBox)
+        }
+    </script>
+</body>
+
+</html>
