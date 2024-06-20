@@ -6,6 +6,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
 import env from "dotenv";
+import nodemailer from 'nodemailer';
 import GoogleStrategy from 'passport-google-oauth2';
 import RedisStore from "connect-redis"
 import { createClient } from "redis"
@@ -85,6 +86,9 @@ app.get("/secrets", async (req, res) => {
   }
 });
 
+app.get("/contact-main", (req, res) => {
+  res.render("main_contact.ejs");
+});
 
 app.get("/about", (req, res) => {
   res.render("about.ejs");
@@ -278,6 +282,99 @@ app.post("/search", async (req, res) => {
 app.get("/logout", (req, res) => {
   res.render("main.ejs");
 });
+
+
+app.post("/contact-submit", (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const text = req.body.text;
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'lakshay.jangra.394@gmail.com',
+      pass: 'cfaprmptfpvzdffd'
+    }
+  });
+  var mailOptions = {
+    from: 'Lakshay Solutions <no-reply@company.com>',
+    to: email,
+    subject: '@no_reply_mail',
+    html: '<h1>Thanks,<br>' + name + '<br>for contacting us, we will get back to you as soon as possible.</h1>'
+  };
+  var mailOptions1 = {
+    from: 'Lakshay Solutions <no-reply@company.com>',
+    to: 'jangralakshay611@gmail.com',
+    subject: 'A person contact us on Lakshay Solutions.',
+    html: '<h1>Email:<br>' + email + '<br>Text:<br>' + text + '</h1>',
+  };
+  if (name.length != 0 && email.length != 0) {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    transporter.sendMail(mailOptions1, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.redirect("/contact-main");
+  }
+  else{
+    res.send("Please fill all the fields");
+  } 
+})
+app.post("/contact-submitin", (req, res) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const text = req.body.text;
+  var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'lakshay.jangra.394@gmail.com',
+      pass: 'cfaprmptfpvzdffd'
+    }
+  });
+  var mailOptions = {
+    from: 'Lakshay Solutions <no-reply@company.com>',
+    to: email,
+    subject: '@no_reply_mail',
+    html: '<h1>Thanks,<br>' + name + '<br>for contacting us, we will get back to you as soon as possible.</h1>'
+  };
+  var mailOptions1 = {
+    from: 'Lakshay Solutions <no-reply@company.com>',
+    to: 'jangralakshay611@gmail.com',
+    subject: 'A person contact us on Lakshay Solutions.',
+    html: '<h1>Email:<br>' + email + '<br>Text:<br>' + text + '</h1>',
+  };
+  if (name.length != 0 && email.length != 0) {
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    transporter.sendMail(mailOptions1, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
+    res.redirect("/contact");
+  }
+  else{
+    res.send("Please fill all the fields");
+  } 
+})
+
+
+
 
 
 
