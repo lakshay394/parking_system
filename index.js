@@ -281,122 +281,117 @@ app.post("/search", async (req, res) => {
 
 
 app.get("/auth/google", passport.authenticate("google", {
-    scope: ["profile", "email"],
-  }));
-  
-  app.get("/auth/google/secrets", passport.authenticate("google", {
+  scope: ["profile", "email"],
+}));
+
+app.get("/auth/google/secrets", passport.authenticate("google", {
+  successRedirect: "/secrets",
+  failureRedirect: "/login",
+}));
+
+
+app.post(
+  "/login",
+  passport.authenticate("local", {
     successRedirect: "/secrets",
     failureRedirect: "/login",
-  }));
-  
-  
-  app.post(
-    "/login",
-    passport.authenticate("local", {
-      successRedirect: "/secrets",
-      failureRedirect: "/login",
-    })
-  );
-  
-  app.post("/register", async (req, res) => {
-    const email = req.body.username;
-    const password = req.body.password;
-  
+  })
+);
+
+app.post("/register", async (req, res) => {
+  const email = req.body.username;
+  const password = req.body.password;
+
+  try {
+    const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    if (checkResult.rows.length > 0) {
+      req.redirect("/login");
+    } else {
+      bcrypt.hash(password, saltRounds, async (err, hash) => {
+        if (err) {
+          console.error("Error hashing password:", err);
+        } else {
+          const result = await db.query(
+            "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
+            [email, hash]
+          );
+          const user = result.rows[0];
+          req.login(user, (err) => {
+            console.log("success");
+            res.redirect("/secrets");
+          });
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+passport.use("local",
+  new Strategy(async function verify(username, password, cb) {
     try {
-      const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [
-        email,
+      const result = await db.query("SELECT * FROM users WHERE email = $1 ", [
+        username,
       ]);
-  
-      if (checkResult.rows.length > 0) {
-        res.redirect("/login");
-      } else {
-        bcrypt.hash(password, saltRounds, async (err, hash) => {
+      if (result.rows.length > 0) {
+        const user = result.rows[0];
+        const storedHashedPassword = user.password;
+        bcrypt.compare(password, storedHashedPassword, (err, valid) => {
           if (err) {
-            console.error("Error hashing password:", err);
+            //Error with password check
+            console.error("Error comparing passwords:", err);
+            return cb(err);
           } else {
-            const result = await db.query(
-              "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *",
-              [email, hash]
-            );
-            const user = result.rows[0];
-            req.login(user, (err) => {
-              console.log("success");
-              res.redirect("/secrets");
-            });
+            if (valid) {
+              //Passed password check
+              return cb(null, user);
+            } else {
+              //Did not pass password check
+              return cb(null, false);
+            }
           }
         });
+      } else {
+        return cb("User not found");
       }
     } catch (err) {
       console.log(err);
     }
-  });
-  
-  passport.use("local",
-    new Strategy(async function verify(username, password, cb) {
-      try {
-        const result = await db.query("SELECT * FROM users WHERE email = $1 ", [
-          username,
-        ]);
-        if (result.rows.length > 0) {
-          const user = result.rows[0];
-          const storedHashedPassword = user.password;
-          bcrypt.compare(password, storedHashedPassword, (err, valid) => {
-            if (err) {
-              //Error with password check
-              console.error("Error comparing passwords:", err);
-              return cb(err);
-            } else {
-              if (valid) {
-                //Passed password check
-                return cb(null, user);
-              } else {
-                //Did not pass password check
-                return cb(null, false);
-              }
-            }
-          });
-        } else {
-          return cb("User not found");
-        }
-      } catch (err) {
-        console.log(err);
+  })
+);
+
+passport.use("google", new GoogleStrategy(
+  {
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
+  }, async (accessToken, refreshToken, profile, cb) => {
+    try {
+      const result = await db.query("select * from users where email=$1",[profile.email]);
+      if (result.rows.length===0) {
+        const newUser=await db.query("insert into users(email,password) values($1,$2)",[profile.email,"google"]);
+        cb(null,newUser.rows[0]);
       }
-    })
-  );
-  
-  passport.use("google", new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "https://parking-system-yoyu.onrender.com/auth/google/secrets",
-      userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo",
-    }, async (accessToken, refreshToken, profile, cb) => {
-      try {
-        console.log(profile);
-        const result = await db.query("SELECT * FROM users WHERE email = $1", [
-          profile.email,
-        ]);
-        if (result.rows.length === 0) {
-          const newUser = await db.query(
-            "INSERT INTO users (email, password) VALUES ($1, $2)",
-            [profile.email, "google"]
-          );
-          return cb(null, newUser.rows[0]);
-        } else {
-          return cb(null, result.rows[0]);
-        }
-      } catch (err) {
-        return cb(err);
+      else{
+        cb(null,result.rows[0]);
       }
-    })
-  );
-  
-  passport.serializeUser((user, cb) => {
-    cb(null, user);
-  });
-  passport.deserializeUser((user, cb) => {
-    cb(null, user);
-  });
+    } catch (error) {
+      cb(err);
+    }
+  })
+);
+
+passport.serializeUser((user, cb) => {
+  cb(null, user);
+});
+passport.deserializeUser((user, cb) => {
+  cb(null, user);
+});
 
 
 app.listen(port, () => {
