@@ -52,6 +52,18 @@ header {
     text-decoration-line: overline;
 }
 
+#logout_btn{
+    border-radius: 20px;
+    background-color: aqua;
+    color: black;
+}
+#logout_btn:hover{
+    text-shadow: none;
+    text-decoration-line: none;
+    background-color: #8a18e1;
+    color: white;
+}
+
 .nav_list {
     text-align: right;
     padding-right: 5%;
