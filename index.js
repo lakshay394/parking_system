@@ -69,11 +69,16 @@ app.get("/", async (req, res) => {
 
 
 app.get("/secrets", async (req, res) => {
-  const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
-  if (data.rows[0] != undefined) {
-    res.render('index.ejs', {
-      getData: data,
-    });
+  console.log(req.user);
+  if (req.isAuthenticated()) {
+    const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
+    if (data.rows[0] != undefined) {
+      res.render('index.ejs', {
+        getData: data,
+      });
+    } else {
+      res.redirect("/login");
+    }
   } else {
     res.redirect("/login");
   }
