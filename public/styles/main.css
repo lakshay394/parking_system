@@ -16,7 +16,7 @@ body{
     width: 100%;
     min-height: 100vh;
     backdrop-filter: blur(1px);
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .container nav{
@@ -85,6 +85,8 @@ body{
     text-align: center;
     pointer-events: none;
 }
+
+
 
 .textBox h1{
     font-size: 3.4em;
