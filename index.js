@@ -69,7 +69,7 @@ app.get("/", async (req, res) => {
 
 
 app.get("/secrets", async (req, res) => {
-  console.log(req.user);
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) {
     const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
     if (data.rows[0] != undefined) {
