@@ -7,12 +7,21 @@ import { Strategy } from "passport-local";
 import session from "express-session";
 import env from "dotenv";
 import GoogleStrategy from 'passport-google-oauth2';
-
+import RedisStore from "connect-redis"
+import { createClient } from "redis"
 
 const app = express();
 const port = process.env.PORT || 4000;
 const saltRounds = 10;
-const memoryStore = new session.MemoryStore();
+let redisClient = createClient({
+  host: 'redis://red-cpppf26ehbks73c6hgrg',
+  port: 6379
+});
+redisClient.connect().catch(console.error);
+let redisStore = new RedisStore({
+  client: redisClient,
+  prefix: "myapp:",
+});
 env.config();
 
 const db = new pg.Client({
@@ -26,10 +35,15 @@ db.connect();
 
 app.use(
     session({
+        store: redisStore,
         secret: process.env.SESSION_SECRET,
         resave: false,
         saveUninitialized: false,
-        store: memoryStore,
+        cookie: {
+        secure: false, // if true only transmit cookie over https
+        httpOnly: false, // if true prevent client side JS from reading the cookie 
+        maxAge: 1000 * 60 * 10 // session max age in miliseconds
+    }
     })
 );
 /*app.use(session({
