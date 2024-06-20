@@ -14,8 +14,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 const saltRounds = 10;
 let redisClient = createClient({
-  host: 'redis://red-cpppf26ehbks73c6hgrg',
-  port: 6379
+  url: 'redis://red-cpppf26ehbks73c6hgrg:6379',
 });
 redisClient.connect().catch(console.error);
 let redisStore = new RedisStore({
