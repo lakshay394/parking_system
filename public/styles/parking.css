@@ -4,11 +4,25 @@
     align-content: center;
     text-align: center;
 }
-.cntr_div{
-    height: 70vh;
-    width: 50%;
-    margin-left: 25%;
-    background-color: aliceblue;
+@media screen and (min-width:800px) {
+
+    .cntr_div {
+        height: 70vh;
+        width: 50%;
+        margin-left: 25%;
+        background-color: aliceblue;
+    }
+
+}
+
+@media screen and (max-width:800px) {
+
+    .cntr_div {
+        height: 40vh;
+        width: 90%;
+        margin-left: 5%;
+        background-color: aliceblue;
+    }
 }
 .bike_parking{
     float: left;
