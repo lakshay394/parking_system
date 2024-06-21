@@ -68,7 +68,17 @@ app.get("/", async (req, res) => {
   res.render("main.ejs");
 });
 
-
+app.get("/parking", async (req, res) => {
+  const parking_no = await db.query("select parking_no from parking where vehicle_no is not null");
+  const pkArray = [];
+  for (let i = 0; i < parking_no.rows.length; i++) {
+    pkArray.push(parking_no.rows[i].parking_no);
+  }
+  console.log(pkArray);
+  res.render("parking.ejs", {
+    pkno: pkArray,
+  });
+});
 app.get("/secrets", async (req, res) => {
   console.log(req.isAuthenticated());
   const check = await req.isAuthenticated();
@@ -111,49 +121,97 @@ app.post("/allot", async (req, res) => {
   const ow_name = req.body.name.toUpperCase();
   const veh_no = req.body.vehicle_no.toUpperCase();
   const veh_name = req.body.company.toUpperCase();
-  const checkEmptyParking = await db.query("select sr_no from parking where vehicle_no is null");
-  let empty_parkings = [];
-  checkEmptyParking.rows.forEach((parking) => {
-    empty_parkings.push(parking.sr_no);
-  });
-  empty_parkings.sort((a, b) => a - b);
-  if (ow_name != '' && veh_no != '' && veh_name != '') {
-    if (empty_parkings[0] != undefined) {
-      const checkVehNo = await db.query("select vehicle_no from parking where vehicle_no is not null");
-      let vehNos = [];
-      checkVehNo.rows.forEach((vehno) => {
-        vehNos.push(vehno.vehicle_no);
+  const category = req.body.category.toUpperCase();
+
+  if (ow_name != '' && veh_no != '' && veh_name != '' && category != "") {
+    if (category == "BIKE") {
+      const checkEmptyParking = await db.query("select sr_no from parking where vehicle_no is null and parking_no like 'b%'");
+      let empty_parkings = [];
+      checkEmptyParking.rows.forEach((parking) => {
+        empty_parkings.push(parking.sr_no);
       });
-      let count = 0;
-      for (let i = 0; i < vehNos.length; i++) {
-        const element = vehNos[i];
-        if (element == veh_no) {
-          count++;
+      empty_parkings.sort((a, b) => a - b);
+      if (empty_parkings[0] != undefined) {
+        const checkVehNo = await db.query("select vehicle_no from parking where vehicle_no is not null");
+        let vehNos = [];
+        checkVehNo.rows.forEach((vehno) => {
+          vehNos.push(vehno.vehicle_no);
+        });
+        let count = 0;
+        for (let i = 0; i < vehNos.length; i++) {
+          const element = vehNos[i];
+          if (element == veh_no) {
+            count++;
+          }
+        }
+        if (count == 0) {
+          const year = new Date().getFullYear();
+          const month = new Date().getMonth() + 1;
+          const day = new Date().getDate();
+          const date = String(year) + "-" + String(month) + "-" + String(day);
+          const pkng_no = await db.query(
+            "update parking set owner_name=$1,vehicle_no=$2,vehicle_company=$3,entry_date=$4 where sr_no=$5 returning parking_no",
+            [ow_name, veh_no, veh_name, date, empty_parkings[0]]
+          );
+          let strm = "Parking " + String(pkng_no.rows[0].parking_no) + " alloted successfully";
+          const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
+          res.render("index.ejs", { entryMessage: strm, getData: data, });
+        }
+        else {
+          console.log("There is same Vehicle exist");
+          const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
+          res.render("index.ejs", { entryMessage: "There is same vehicle exist.", getData: data, });
         }
       }
-      if (count == 0) {
-        const year = new Date().getFullYear();
-        const month = new Date().getMonth() + 1;
-        const day = new Date().getDate();
-        const date = String(year) + "-" + String(month) + "-" + String(day);
-        const pkng_no = await db.query(
-          "update parking set owner_name=$1,vehicle_no=$2,vehicle_company=$3,entry_date=$4 where sr_no=$5 returning parking_no",
-          [ow_name, veh_no, veh_name, date, empty_parkings[0]]
-        );
-        let strm = "Parking " + String(pkng_no.rows[0].parking_no) + " alloted successfully";
+      else {
+        console.log("There is no Parking Available")
         const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
-        res.render("index.ejs", { entryMessage: strm, getData: data, });
+        res.render("index.ejs", { entryMessage: "Parking space not available.", getData: data, });
+      }
+    } else if (category == "CAR") {
+      const checkEmptyParking = await db.query("select sr_no from parking where vehicle_no is null and parking_no like 'c%'");
+      let empty_parkings = [];
+      checkEmptyParking.rows.forEach((parking) => {
+        empty_parkings.push(parking.sr_no);
+      });
+      empty_parkings.sort((a, b) => a - b);
+      if (empty_parkings[0] != undefined) {
+        const checkVehNo = await db.query("select vehicle_no from parking where vehicle_no is not null");
+        let vehNos = [];
+        checkVehNo.rows.forEach((vehno) => {
+          vehNos.push(vehno.vehicle_no);
+        });
+        let count = 0;
+        for (let i = 0; i < vehNos.length; i++) {
+          const element = vehNos[i];
+          if (element == veh_no) {
+            count++;
+          }
+        }
+        if (count == 0) {
+          const year = new Date().getFullYear();
+          const month = new Date().getMonth() + 1;
+          const day = new Date().getDate();
+          const date = String(year) + "-" + String(month) + "-" + String(day);
+          const pkng_no = await db.query(
+            "update parking set owner_name=$1,vehicle_no=$2,vehicle_company=$3,entry_date=$4 where sr_no=$5 returning parking_no",
+            [ow_name, veh_no, veh_name, date, empty_parkings[0]]
+          );
+          let strm = "Parking " + String(pkng_no.rows[0].parking_no) + " alloted successfully";
+          const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
+          res.render("index.ejs", { entryMessage: strm, getData: data, });
+        }
+        else {
+          console.log("There is same Vehicle exist");
+          const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
+          res.render("index.ejs", { entryMessage: "There is same vehicle exist.", getData: data, });
+        }
       }
       else {
-        console.log("There is same Vehicle exist");
+        console.log("There is no Parking Available")
         const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
-        res.render("index.ejs", { entryMessage: "There is same vehicle exist.", getData: data, });
+        res.render("index.ejs", { entryMessage: "Parking space not available.", getData: data, });
       }
-    }
-    else {
-      console.log("There is no Parking Available")
-      const data = await db.query("select * from parking where vehicle_no is not null order by sr_no");
-      res.render("index.ejs", { entryMessage: "Parking space not available.", getData: data, });
     }
   }
   else {
@@ -166,7 +224,9 @@ app.post("/allot", async (req, res) => {
       res.render("index.ejs", { entryMessage: "Please fill all fields.", });
     }
   }
-});
+}
+);
+
 
 
 
@@ -394,7 +454,7 @@ app.get(
   "/auth/google/secrets",
   passport.authenticate("google", {
     successRedirect: "/secrets",
-    failureRedirect: "/logi",
+    failureRedirect: "/login",
   })
 );
 
