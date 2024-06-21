@@ -8,6 +8,12 @@
             <hr width="90%" style="margin-left: 5%;">
             <input type="text" name="company" class="entries" placeholder="Vehicle Name" autocomplete="off">
             <hr width="90%" style="margin-left: 5%;">
+            <input list="categoories"  name="category" class="entries" placeholder="category" autocomplete="off">
+            <datalist id="categoories" style="width: 100%;">
+                <option value="CAR" />
+                <option value="BIKE" />
+            </datalist>
+            <hr width="90%" style="margin-left: 5%;">
             <% if (locals.entryMessage) { %>
                 <h5 style="margin-top: 5%; color: rgb(122, 239, 249);">Message: <%= entryMessage %>
                 </h5>
