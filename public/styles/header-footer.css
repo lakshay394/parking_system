@@ -74,21 +74,19 @@ header {
 
 
 .linked_img {
-    width: 5%;
-    margin-right: 2%;
+    width: 3.1%;
+    margin-bottom:.5%;
 }
 
 .insta_img {
-    width: 3%;
-    margin-bottom: 1%;
+    width: 4.5%;
+    margin-bottom: .5%;
 }
 
 .github_img {
-    width: 3.3%;
+    width: 3%;
     margin-bottom: .8%;
     margin-right: 2%;
-    margin-left: 2%;
-
 }
 .contact_img {
     text-align: right;
@@ -261,25 +259,24 @@ header {
       
       
 
-    .linked_img {
-        width: 5%;
-        margin-right: 2%;
+      .linked_img {
+        width: 3.1%;
+        margin-bottom:.5%;
     }
     
     .insta_img {
-        width: 3%;
-        margin-bottom: 1%;
+        width: 4.5%;
+        margin-bottom: .5%;
     }
     
     .github_img {
-        width: 3.3%;
+        width: 3%;
         margin-bottom: .8%;
         margin-right: 2%;
-        margin-left: 2%;
-    
     }
     .contact_img {
-        text-align: right;
+        margin-top: 2%;
+        /* text-align: right; */
     }
     .footer {
         font-family: "Bellota", system-ui;
@@ -298,10 +295,12 @@ header {
         text-align: center;
         margin-left: 24%;
     }
-    
+    .get_txt{
+        font-size: 100%;
+    }
     .email {
-        font-size: large;
-        float: left;
+        font-size: 70%;
+        /* float: left; */
     }
     
 }
