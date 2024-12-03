@@ -148,7 +148,7 @@ app.post("/allot", async (req, res) => {
           const year = new Date().getFullYear();
           const month = new Date().getMonth() + 1;
           const day = new Date().getDate();
-          const date = String(year) + "-" + String(month) + "-" + String(day);
+          const date = String(day) + "-" + String(month) + "-" + String(year);
           const pkng_no = await db.query(
             "update parking set owner_name=$1,vehicle_no=$2,vehicle_company=$3,entry_date=$4 where sr_no=$5 returning parking_no",
             [ow_name, veh_no, veh_name, date, empty_parkings[0]]
