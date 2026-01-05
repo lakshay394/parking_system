@@ -30,7 +30,10 @@ const db = new pg.Client({
     database: process.env.PGDB,
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
-    
+    ssl: {
+    rejectUnauthorized: true,
+    ca: fs.readFileSync('./ca.pem').toString(),
+  },
 });
 db.connect();
 
@@ -572,6 +575,7 @@ passport.deserializeUser((user, cb) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
 
 
 
