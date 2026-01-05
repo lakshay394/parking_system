@@ -9,6 +9,7 @@ import env from "dotenv";
 import nodemailer from 'nodemailer';
 import GoogleStrategy from 'passport-google-oauth2';
 import RedisStore from "connect-redis"
+import fs from "fs"
 import { createClient } from "redis"
 
 const app = express();
@@ -575,6 +576,7 @@ passport.deserializeUser((user, cb) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
 
 
 
