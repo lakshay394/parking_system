@@ -30,10 +30,7 @@ const db = new pg.Client({
     database: process.env.PGDB,
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
-    ssl: {
-      rejectUnauthorized: true, 
-      ca: "MIIEUDCCArigAwIBAgIUPdabppFdnPBRZkBYnqpPXfBkmGwwDQYJKoZIhvcNAQEMBQAwQDE+MDwGA1UEAww1YzQzYTIzYzktY2RmYi00ZWY2LWFmODgtZWYzNjM5NjcwOWRiIEdFTiAxIFByb2plY3QgQ0EwHhcNMjYwMTA1MTAyMTA4WhcNMzYwMTAzMTAyMTA4WjBAMT4wPAYDVQQDDDVjNDNhMjNjOS1jZGZiLTRlZjYtYWY4OC1lZjM2Mzk2NzA5ZGIgR0VOIDEgUHJvamVjdCBDQTCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAMcnqUpIpavNFbj5jrzuptL4LUAzuR0DMrNDDJzb875UybDQEE0YBv/HglLBXu/Tdf67ztukreyRKeskfidGKhvDSyY/6dhjfLiT0w6E3pL+XAgPC3QZTJ3pLg4owQ1RYfJiwx2UgbnPdxlqlTdDnvekbozyQMiuwLot09Hs6sgBUBvxFx7EOg3fwrk12nnLHhMHPMoSL9XbOVs/K5PvnND3DcpT/3rBKJRaenPTlBQJdmERTPhR0RBljen92MyS45CdcRJlR0gCkmC6NpAXCoOutMw9cm/4L77poZicIHcyStRY9T56W0/wDqfinx+3/3syhEYA7ZM0GW+yPgkK9W//N+WNjpBRji0SE1T8K1Nk+tLgsB8ahoWzdfx6kMGEWEZij3Lh3dWnje6JqNquDeQjA8vvjnWbvVrpPgIlIhf5H/4M8k6+hVFFnK/NfnX6RRIHOJGsgcX4kbMDBCHeusX85x9ePnkpLAoVwyezc37xPn2kDD5R1OVerVFIHPXqtQIDAQABo0IwQDAdBgNVHQ4EFgQUeF4H865VCajSa9QV2xhIAq+CCkYwEgYDVR0TAQH/BAgwBgEB/wIBADALBgNVHQ8EBAMCAQYwDQYJKoZIhvcNAQEMBQADggGBAH9clatTXHOH4O3/X9E5G4Ztxg6M9Y/TwSulFWwr+pU/C1idQGamsUhX6SqLKKC4UtwAiQwSzx8dDGAGxdcmf5tZPb2IqRP47LZv9ZlPp2RCv+ue7bXrRkSMpNdf2dqim1CdFMr5h3rBC5Q8O+YPXSl6gHWq2YPYXuktGBoV+2/A3zBZkPjwducoKHFi8rsiTOKAOUH8iX5Dx+ig1mlqAlXTFpAXxbe7NQb9Le7pswxAg/0eNntA4cyQjwLe9ym49S+Tyocg9r/FXuYtuZrKOvk44cRQ8mCt80q5+pmGzw9yrr0yFUGcGuJ3V9W1p2B46Qe7iKmHfAlb7LBpgXmtQezT3RsmRSgq0CgC7mGNRLQ6Joxp1SSlV9epHZS7EdRnaRrYhnMVQqTDj/tsG2kyyNowN36NhFg7VX8sbzcOZPCtTAWCsXx5K16RlLzohRwaNDcVHP6FyQAeZm5/mNqXwU2X32/dAbctGt4fXd0Qj2VnGDhwLWHbPHewhhajO7bT2Q==",
-    },
+    ssl: true,
 });
 db.connect();
 
@@ -575,6 +572,7 @@ passport.deserializeUser((user, cb) => {
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
 
 
 
